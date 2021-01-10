@@ -54,3 +54,102 @@ table {
 
 /*#endregion*/
 
+:root {
+  --correctGreen: rgb(106, 235, 123);
+  --incorrectRed: rgb(255, 123, 123);
+}
+
+body {
+  background-color: rgb(25, 25, 25);
+  color: black;
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#start {
+  background-color: white;
+  border-radius: 10px;
+  font-size: 26px;
+  padding: 10px;
+  margin: 20px;
+}
+
+#start:hover {
+  cursor: pointer;
+}
+
+#quiz div{
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 200px;
+  width: 200px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 20px;
+  font-size: 140px;
+}
+
+#answers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(100px, 1fr));
+  grid-template-rows: repeat(2, minmax(100px, 1fr));
+  gap: 5px;
+}
+
+#answers button {
+  font-size: 25px;
+  border-radius: 10px;
+}
+
+
+
+.hide {
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+}
+
+#results {
+  display: grid;
+  font-size: 20px;
+  grid-template-columns: repeat(2, minmax(75px, 1fr));
+  gap: 5px;
+  text-align: center;
+}
+
+#myProgress {
+  width: 100%;
+  background-color: var(--incorrectRed);
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  line-height: 30px;
+  background-color: green;
+}
+
+.resultText {
+  background-color: white;
+  padding: 5px;
+}
+
+.theAnswer {
+  background-color: white;
+  padding: 5px;
+}
+
+.correct {
+  background-color: var(--correctGreen);
+  padding: 5px;
+}
+.incorrect {
+  background-color: var(--incorrectRed);
+  padding: 5px;
+}

@@ -34,24 +34,33 @@ const katakanaArray = [
     'ダ', 'デ', 'ド', 
     'バ', 'ビ', 'ブ', 'ベ', 'ボ', 
     'パ', 'ピ', 'プ', 'ペ', 'ポ', 
- 
-    'ー'
 ]
-
-const currentKana = katakanaArray;
 
 Array.prototype.randomSyllabary = function(){
     return this[Math.floor(Math.random()*this.length)];
 }
 
+var currentKana = hiraganaArray;
 
 var quizArray, currentQuizItem, currentQuizItemIndex, results;
 
-var startButton = document.querySelector('#start');
+const startButton = document.querySelector('#start');
 
-var resultsElement = document.querySelector('#results');
+const resultsElement = document.querySelector('#results');
 
-var answersElement = document.getElementById('answers');
+const answersElement = document.getElementById('answers');
+
+const kanaButton = document.getElementById('kana');
+
+kanaButton.addEventListener('click', () => {
+    if(currentKana == hiraganaArray) {
+        currentKana = katakanaArray;
+        kanaButton.textContent = 'KATAKANA';
+    } else {
+        currentKana = hiraganaArray;
+        kanaButton.textContent = 'HIRAGANA';
+    }
+})
 
 startButton.addEventListener('click', () => {
     startQuiz(currentKana);
@@ -64,15 +73,19 @@ function startQuiz(currentKana) {
 
     passTrueIfYouWantToChangeElementClassToHide(startButton, true);
 
+    passTrueIfYouWantToChangeElementClassToHide(kanaButton, true);
+
     passTrueIfYouWantToChangeElementClassToHide(resultsElement, true);
 
     passTrueIfYouWantToChangeElementClassToHide(answersElement, false);
+
     quizArray = getNewArrayThatContainsKanaThatCanBeUsedForTheQuiz(currentKana, 10);
     currentQuizItemIndex = 0;
     currentQuizItem = quizArray[currentQuizItemIndex];
     results = [];
+
     createKanaQuizCard(currentQuizItem);
-    getAnswersArrayDisplayThemAndCheckForClickOnAnswerButtons(currentKana, currentQuizItem, results);
+    getAnswersArrayDisplayThemAndCheckForClickOnAnswerButtons(currentQuizItem);
 }
 
 function finishQuiz() {
@@ -80,6 +93,8 @@ function finishQuiz() {
     startButton.textContent = 'RESTART';
 
     passTrueIfYouWantToChangeElementClassToHide(startButton, false);
+
+    passTrueIfYouWantToChangeElementClassToHide(kanaButton, false);
 
     passTrueIfYouWantToChangeElementClassToHide(resultsElement, false);
 
@@ -125,7 +140,7 @@ function finishQuiz() {
     for(var i = 0; i < results.length; i++) {
 
         var correctAnswer = document.createElement('p');
-        correctAnswer.textContent = `${results[i][1]} =>  ${wanakana.toRomaji(results[i][1])}`;
+        correctAnswer.textContent = `${results[i][1]} = ${wanakana.toRomaji(results[i][1])}`;
         correctAnswer.className = 'theAnswer';
         var selectedAnswer = document.createElement('p');
         selectedAnswer.textContent = `${results[i][0]}`;
@@ -144,12 +159,12 @@ function finishQuiz() {
     resetState();
 }
 
-function nextQuizItem(currentKana, currentQuizItem, results) {
+function nextQuizItem(currentQuizItem) {
     currentQuizItemIndex++;
     currentQuizItem = quizArray[currentQuizItemIndex];
     resetState();
     createKanaQuizCard(currentQuizItem);
-    getAnswersArrayDisplayThemAndCheckForClickOnAnswerButtons(currentKana, currentQuizItem, results);
+    getAnswersArrayDisplayThemAndCheckForClickOnAnswerButtons(currentQuizItem);
 }
 
 function resetState() {
@@ -167,15 +182,13 @@ function getRidOfPreviousResults() {
     }
 }
 
-function getAnswersArrayDisplayThemAndCheckForClickOnAnswerButtons(currentKana, currentQuizItem, results) {
-    getAnswersFromArrayAndDisplayThem(currentKana, currentQuizItem);
-    pushAnswerAndSelectedAnswerToArray(currentKana, currentQuizItem, results)
+function getAnswersArrayDisplayThemAndCheckForClickOnAnswerButtons(currentQuizItem) {
+    getAnswersFromArrayAndDisplayThem(currentQuizItem);
+    pushAnswerAndSelectedAnswerToArray(currentQuizItem);
 }
 
-function getAnswersFromArrayAndDisplayThem(currentKana, currentQuizItem) {
+function getAnswersFromArrayAndDisplayThem(currentQuizItem) {
     var answerArray = getNewArrayThatContainsRomajiThatCanBeUsedForTheAnswers(currentKana, 3, currentQuizItem);
-
-    console.log(answerArray);
 
     for(var i = 0; i < answerArray.length; i++) {
         let button = document.createElement('button');
@@ -187,7 +200,7 @@ function getAnswersFromArrayAndDisplayThem(currentKana, currentQuizItem) {
     }
 }
 
-function pushAnswerAndSelectedAnswerToArray(currentKana, quizItem, results) {
+function pushAnswerAndSelectedAnswerToArray(quizItem) {
     var button = document.querySelectorAll('#btn');
 
     button.forEach(btn => {
@@ -197,10 +210,9 @@ function pushAnswerAndSelectedAnswerToArray(currentKana, quizItem, results) {
                 newArr.push(quizItem);
 
                 results.push(newArr);
-                console.log(results);
 
             if(results.length < quizArray.length) {
-                nextQuizItem(currentKana, quizItem, results)
+                nextQuizItem(currentQuizItem, currentQuizItemIndex)
             } else {
                 finishQuiz();
             }
@@ -209,7 +221,6 @@ function pushAnswerAndSelectedAnswerToArray(currentKana, quizItem, results) {
 }
 
 function createKanaQuizCard(quizItem) {
-    console.log(quizItem);
     var quizCard = document.createElement('div');
     quizCard.append(quizItem);
 
@@ -225,7 +236,6 @@ function getNewArrayThatContainsKanaThatCanBeUsedForTheQuiz(kanaArray, num) {
         newArr.push(element);
         kanaArrayCopy.splice(kanaArrayCopy.indexOf(element), 1);
     }
-    console.log(newArr);
     return newArr;
 }
 

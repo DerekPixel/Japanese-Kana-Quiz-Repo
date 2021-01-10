@@ -59,6 +59,11 @@ table {
   --incorrectRed: rgb(255, 123, 123);
 }
 
+@font-face {
+  font-family: 'osaka';
+  src: url(./osaka-re.ttf);
+}
+
 body {
   background-color: rgb(25, 25, 25);
   color: black;
@@ -73,11 +78,28 @@ body {
   background-color: white;
   border-radius: 10px;
   font-size: 26px;
+  font-family: 'osaka';
   padding: 10px;
   margin: 20px;
+  user-select: none;
 }
 
 #start:hover {
+  cursor: pointer;
+}
+
+#kana {
+  width: 145px;
+  background-color: white;
+  border-radius: 10px;
+  font-size: 26px;
+  font-family: 'osaka';
+  padding: 10px;
+  margin: 20px auto;
+  user-select: none;
+}
+
+#kana:hover {
   cursor: pointer;
 }
 
@@ -107,8 +129,6 @@ body {
   border-radius: 10px;
 }
 
-
-
 .hide {
   position: absolute !important;
   top: -9999px !important;
@@ -132,7 +152,7 @@ body {
   width: 1%;
   height: 30px;
   line-height: 30px;
-  background-color: green;
+  background-color: var(--correctGreen);
 }
 
 .resultText {
